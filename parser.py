@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import csv
 
 def load_CSV(filename):
@@ -18,24 +17,22 @@ def load_CSV(filename):
     return matrix
 
 
-def make_col(matrix, col):
-    column = []
+def discrim(matrix):
+    edited_matrix = []
 
     for row in matrix:
-        column.append(row[col])
+        if row[8] == '1333110993' and row[7].find('2017-07-05') != -1:
+            edited_matrix.append(row)
 
-    return column
+    return edited_matrix
 
 
 if __name__ == '__main__':
     data = load_CSV('analytics.device_data.hellotractor.30k.csv')
     
-    heading = make_col(data, 4)
-    speed = make_col(data, 5)
+    edited_matrix = discrim(data)
 
-    del heading[0]
-    del speed[0]
+    with open('edit.csv', 'w') as edit:
+        writer = csv.writer(edit)
 
-    plt.plot(heading, speed, 'ro')
-    plt.show()
-
+        writer.writerows(edited_matrix)
