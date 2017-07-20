@@ -19,4 +19,4 @@ def load_CSV(filename):
 
 
 if __name__ == '__main__':
-    # main method
+    data = load_CSV('analytics.device_data.hellotractor.30k')
