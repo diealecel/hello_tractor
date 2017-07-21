@@ -2,7 +2,7 @@ import csv
 from collections import deque
 from numpy import mean
 
-WINDOW_SIZE = 700
+WINDOW_SIZE = 5
 
 def load_CSV(filename):
     matrix = []
@@ -25,7 +25,8 @@ def load_init(data):
     window = deque()
 
     for i in xrange(WINDOW_SIZE):
-        window.append(abs(int(data[i + 1][1]) - int(data[i][1])))
+        inter = abs(int(data[i + 1][1]) - int(data[i][1]))
+        window.append(inter if inter <= 180 else 360 - inter)
 
     return window
 
