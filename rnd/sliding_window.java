@@ -32,9 +32,10 @@ class Instance implements Comparable<Instance> {
 
 
 public class sliding_window {
-    int WINDOW_SIZE = 5;
-    int PACKET_END = 400;
-    int PACKET_START = 0;
+    static final String CSV_FILE = "edit.csv";
+    final int WINDOW_SIZE = 5;
+    final int PACKET_END = 400;
+    final int PACKET_START = 0;
 
     static ArrayList<String[]> csvReader(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -54,15 +55,8 @@ public class sliding_window {
     }
 
 
-    public static void main(String[] args) throws IOException {
-        int[] headings;
-        int[] averages;
-
-        //instance data = new instance('edit.csv');
-        //data.sort(key = lambda point: point[7]);
-
-        ArrayList<String[]> data = csvReader("edit.csv");
-
+    static ArrayList<Instance> createPoints(String filename) throws IOException {
+        ArrayList<String[]> data = csvReader(filename);
         ArrayList<Instance> points = new ArrayList<Instance>();
 
         for(String[] row : data) {
@@ -74,8 +68,11 @@ public class sliding_window {
 
         Collections.sort(points);
 
-        for(Instance point : points) {
-            System.out.println(point.getDate());
-        }
+        return points;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        ArrayList<Instance> points = createPoints(CSV_FILE);
     }
 }
