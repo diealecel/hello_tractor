@@ -2,21 +2,31 @@
 import java.util.*;
 import java.io.*;
 
-class instance {
+class Instance implements Comparable<Instance> {
     private int heading;
     private int speed;
+    private String date;
 
-    instance(int heading, int speed) {
+    Instance(int heading, int speed, String date) {
         this.heading = heading;
         this.speed = speed;
+        this.date = date;
     }
 
-    int get_heading() {
+    int getHeading() {
         return heading;
     }
 
-    int get_speed() {
+    int getSpeed() {
         return speed;
+    }
+
+    String getDate() {
+        return date;
+    }
+
+    public int compareTo(Instance point) {
+        return this.getDate().compareTo(point.getDate());
     }
 }
 
@@ -26,7 +36,7 @@ public class sliding_window {
     int PACKET_END = 400;
     int PACKET_START = 0;
 
-    static ArrayList<String[]> csv_reader(String filename) throws IOException {
+    static ArrayList<String[]> csvReader(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
 
         ArrayList<String[]> data = new ArrayList<String[]>();
@@ -51,12 +61,21 @@ public class sliding_window {
         //instance data = new instance('edit.csv');
         //data.sort(key = lambda point: point[7]);
 
-        ArrayList<String[]> data = csv_reader("edit.csv");
+        ArrayList<String[]> data = csvReader("edit.csv");
 
-        for(String[] thing : data) {
-            for(String other_thing : thing) {
-                System.out.println(other_thing);
-            }
+        ArrayList<Instance> points = new ArrayList<Instance>();
+
+        for(String[] row : data) {
+            Instance point = new Instance(Integer.parseInt(row[1]),
+                                          Integer.parseInt(row[4]),
+                                          row[7]);
+            points.add(point);
+        }
+
+        Collections.sort(points);
+
+        for(Instance point : points) {
+            System.out.println(point.getDate());
         }
     }
 }
