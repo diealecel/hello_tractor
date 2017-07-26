@@ -171,8 +171,17 @@ public class sliding_window {
 		}
 	    }
 	    
-	    //if(job)...
-	    //else...
+	    /*
+	    if(job && !doubt){
+
+	    } else if(job && doubt){
+
+	    } else if(!job && !doubt){
+
+	    } else if(!job && doubt){
+
+	    }
+	    */
         }
     }
 }

@@ -112,13 +112,13 @@ public class sliding_window {
 	if(job){
             for(int i = 0; i < WINDOW_SIZE; i++){
 		if(windowAvg.peek() >= THRESHOLD) returnVal = false; 
-		window.add(window.remove());
+		windowAvg.add(windowAvg.remove());
             }
             return returnVal; 
         } else {
             for(int i = 0; i < WINDOW_SIZE; i++){
 		if(windowAvg.peek() < THRESHOLD) returnVal = false; 
-		window.add(window.remove());
+		windowAvg.add(windowAvg.remove());
 	    }
             return returnVal; 
         }
