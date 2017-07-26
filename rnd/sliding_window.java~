@@ -37,7 +37,7 @@ public class sliding_window {
     static final int WINDOW_SIZE = 5;
     static final int PACKET_END = 400;
     static final int PACKET_START = 0;
-    static final int THRESHOLD = 70; 
+    static final int THRESHOLD = 70;
 
     static ArrayList<String[]> csvReader(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -90,12 +90,16 @@ public class sliding_window {
         double sum = 0;
 
         for(int i = 0; i < WINDOW_SIZE; i++) {
-            if(i < index){ sum += window.peek(); }
+            if(i < index) {
+                sum += window.peek();
+            }
+
             window.add(window.remove());
         }
 
         return sum / WINDOW_SIZE;
     }
+
 
     static Queue<Double> initWindowAvg(Queue<Integer> window){
         Queue<Double> windowAvg = new LinkedList<Double>();
@@ -107,58 +111,71 @@ public class sliding_window {
         return windowAvg;
     }
 
-    static Boolean checkWindowAvg(Queue<Double> windowAvg, Boolean job){
-	Boolean returnVal = true; 
-	if(job){
-            for(int i = 0; i < WINDOW_SIZE; i++){
-		if(windowAvg.peek() >= THRESHOLD) returnVal = false; 
-		windowAvg.add(windowAvg.remove());
+
+    static Boolean checkWindowAvg(Queue<Double> windowAvg, Boolean job) {
+        Boolean returnVal = true;
+
+        if(job) {
+            for(int i = 0; i < WINDOW_SIZE; i++) {
+                if(windowAvg.peek() >= THRESHOLD) {
+                    returnVal = false;
+                }
+
+                windowAvg.add(windowAvg.remove());
             }
-            return returnVal; 
+
+            return returnVal;
+
         } else {
-            for(int i = 0; i < WINDOW_SIZE; i++){
-		if(windowAvg.peek() < THRESHOLD) returnVal = false; 
-		windowAvg.add(windowAvg.remove());
-	    }
-            return returnVal; 
+            for(int i = 0; i < WINDOW_SIZE; i++) {
+                if(windowAvg.peek() < THRESHOLD) {
+                    returnVal = false;
+                }
+
+                windowAvg.add(windowAvg.remove());
+            }
+
+            return returnVal;
         }
     }
+
 
     public static void main(String[] args) throws IOException {
         ArrayList<Instance> points = createPoints(CSV_FILE);
         Queue<Integer> window = initWindow(points);
         Queue<Double> windowAvg = initWindowAvg(window);
-       
-	
-        Boolean job = false; 
-        Boolean doubt = false;
-	
-        for(int i = PACKET_START + WINDOW_SIZE; i < PACKET_END; i++) {
-	    window.remove(); 
-	    windowAvg.remove(); 
 
-	    int headingChange = Math.abs(points.get(i).getHeading() - points.get(i + 1).getHeading());
+
+        Boolean job = false;
+        Boolean doubt = false;
+
+        for(int i = PACKET_START + WINDOW_SIZE; i < PACKET_END; i++) {
+            window.remove();
+            windowAvg.remove();
+
+            int headingChange = Math.abs(points.get(i).getHeading() - points.get(i + 1).getHeading());
             window.add(headingChange > 180 ? 360 - headingChange : headingChange);
-	    
-	    double averageHeading = windowMean(window, WINDOW_SIZE); 
-	    windowAvg.add(averageHeading); 
-		      
-	    if(!job && averageHeading >= THRESHOLD){ 
-                if(doubt && checkWindowAvg(windowAvg, job)){
+
+            double averageHeading = windowMean(window, WINDOW_SIZE);
+            windowAvg.add(averageHeading);
+
+            if(!job && averageHeading >= THRESHOLD) {
+                if(doubt && checkWindowAvg(windowAvg, job)) {
                     job = true;
-		    doubt = false; 
-                } else 
-		doubt = true; 
-            } 
-	   
-	    else if(job && averageHeading < THRESHOLD){
-                if(doubt && checkWindowAvg(windowAvg, job)){
+                    doubt = false;
+                } else {
+                    doubt = true;
+                }
+
+            } else if(job && averageHeading < THRESHOLD) {
+                if(doubt && checkWindowAvg(windowAvg, job)) {
                     job = false;
 		    doubt = false; 
-                } else 
+                } else {
 		doubt = true; 
-            } 
-	   
+		}
+	    }
+
 	    else if(job && doubt && averageHeading > THRESHOLD){
 		if(checkWindowAvg(windowAvg, !job)){
 		    doubt = false;
@@ -171,8 +188,20 @@ public class sliding_window {
 		}
 	    }
 	    
-	    //if(job)...
-	    //else...
-        }
+	    /*
+	    if(job && !doubt){
+
+	    } else if(job && doubt){
+
+	    } else if(!job && !doubt){
+
+	    } else if(!job && doubt){
+
+	    }
+	    */
+	    }
+	}
     }
 }
+
+                    
