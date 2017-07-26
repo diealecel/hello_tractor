@@ -37,6 +37,7 @@ public class sliding_window {
     static final int WINDOW_SIZE = 5;
     static final int PACKET_END = 400;
     static final int PACKET_START = 0;
+    static final int THRESHOLD = 70; 
 
     static ArrayList<String[]> csvReader(String filename) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -110,14 +111,14 @@ public class sliding_window {
 	Boolean returnVal = true; 
 	if(job){
             for(int i = 0; i < WINDOW_SIZE; i++){
-		if(windowAvg.peek() >= 70) returnVal = false; 
-		window.add(window.remove());
+		if(windowAvg.peek() >= THRESHOLD) returnVal = false; 
+		windowAvg.add(windowAvg.remove());
             }
             return returnVal; 
         } else {
             for(int i = 0; i < WINDOW_SIZE; i++){
-		if(windowAvg.peek() < 70) returnVal = false; 
-		window.add(window.remove())
+		if(windowAvg.peek() < THRESHOLD) returnVal = false; 
+		windowAvg.add(windowAvg.remove());
 	    }
             return returnVal; 
         }
@@ -142,7 +143,7 @@ public class sliding_window {
 	    double averageHeading = windowMean(window, WINDOW_SIZE); 
 	    windowAvg.add(averageHeading); 
 		      
-	    if(!job && averageHeading >= 70){ 
+	    if(!job && averageHeading >= THRESHOLD){ 
                 if(doubt && checkWindowAvg(windowAvg, job)){
                     job = true;
 		    doubt = false; 
@@ -150,7 +151,7 @@ public class sliding_window {
 		doubt = true; 
             } 
 	   
-	    else if(job && averageHeading < 70){
+	    else if(job && averageHeading < THRESHOLD){
                 if(doubt && checkWindowAvg(windowAvg, job)){
                     job = false;
 		    doubt = false; 
@@ -158,13 +159,13 @@ public class sliding_window {
 		doubt = true; 
             } 
 	   
-	    else if(job && doubt && averageHeading > 70){
+	    else if(job && doubt && averageHeading > THRESHOLD){
 		if(checkWindowAvg(windowAvg, !job)){
 		    doubt = false;
 		}
 	    }
 	  
-	    else if(!job && doubt && averageHeading <= 70){
+	    else if(!job && doubt && averageHeading <= THRESHOLD){
 		if(checkWindowAvg(windowAvg, !job)){
 		    doubt = false; 
 		}
