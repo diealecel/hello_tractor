@@ -170,26 +170,22 @@ public class sliding_window {
             } else if(job && averageHeading < THRESHOLD) {
                 if(doubt && checkWindowAvg(windowAvg, job)) {
                     job = false;
-		    doubt = false; 
+                    doubt = false;
                 } else {
-		doubt = true; 
-		}
-	    }
+                    doubt = true;
+                }
 
-	    else if(job && doubt && averageHeading > THRESHOLD){
-		if(checkWindowAvg(windowAvg, !job)){
-		    doubt = false;
-		}
-	    }
-	  
-	    else if(!job && doubt && averageHeading <= THRESHOLD){
-		if(checkWindowAvg(windowAvg, !job)){
-		    doubt = false; 
-		}
-	    }
-
-	    return job; 
-	    
+            } else if(job && doubt && averageHeading > THRESHOLD) {
+                if(checkWindowAvg(windowAvg, !job)){
+                    doubt = false;
+                }
+                
+            } else if(!job && doubt && averageHeading <= THRESHOLD) {
+                if(checkWindowAvg(windowAvg, !job)) {
+                    doubt = false;
+                }
+            }
+ 	   
 	    /*
 	    if(job && !doubt){
 
@@ -203,7 +199,4 @@ public class sliding_window {
 	    */
 	    }
 	}
-    }
-
-
-                    
+}
