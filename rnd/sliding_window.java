@@ -187,6 +187,8 @@ public class sliding_window {
 		    doubt = false; 
 		}
 	    }
+
+	    return job; 
 	    
 	    /*
 	    if(job && !doubt){
